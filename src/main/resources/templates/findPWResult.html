@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +8,7 @@
 <body>
 <h1>Password Found</h1>
 <p>당신의 비밀번호 :</p>
-<p><strong>{{foundPassword}}</strong></p>
-<div onclick="changePage('login')">로그인 페이지로 돌아가기</div>
+<span th:text="${foundPassword}"></span>
+<a href="/login"><p>로그인 페이지로 돌아가기</p></a>
 </body>
 </html>
