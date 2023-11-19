@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="ko">
 <head>
-    <meta charset="utf-8">
     <title>SKYGUIDE</title>
-    <link rel="stylesheet" type="text/css" href="main.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/main.css">
 </head>
 <body>
 <input type="checkbox" id="menuicon">
@@ -18,17 +17,12 @@
 
 <div id="video-container">
     <video id="video" preload="auto" autoplay loop muted>
-        <source src="night.mp4" type="video/mp4">
+        <source src="../static/img/night.mp4" type="video/mp4">
     </video>
 </div>
 
 <div id="text-container">
-    <div id="text">
-        SKYGUIDE
-        <span th:if="${currentUser != null}">
-        <span th:text="'환영합니다, ' + ${currentUser.username} + '님!'"></span>
-    </span>
-    </div>
+    <div id="text">SKYGUIDE</div>
 </div>
 </body>
 </html>

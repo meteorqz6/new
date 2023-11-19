@@ -1,0 +1,67 @@
+
+*{
+    box-sizing: border-box;
+}
+
+.container{
+    width: 550px;
+    height: 500px;
+    border: 2px solid #8ca7ce;
+    border-radius: 20px;
+    box-shadow: 7px 7px 39px 0px #24498240;
+
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 100px;
+
+}
+
+
+h2 {
+    font-family: "Times New Roman",Times,serif;
+    font-weight: bold;
+    padding: 1px;
+    font-size: 45px;
+    letter-spacing: 2px;
+    color: #4f69a6;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.7);
+}
+
+input[type="text"], input[type="email"],
+input[type="password"] {
+    width: 350px;
+    height: 40px;
+    padding: 10px;
+    margin: 3px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="password"]::placeholder {
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #aaa;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    border-color: #8ca7ce;
+    border-width: 1.5px;
+}
+
+button {
+    width: 350px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1.5px solid #8ca7ce;
+    height: 60px;
+    font-size: 25px;
+    font-family: 'Noto Sans KR', sans-serif;
+    letter-spacing: 2px;
+    color: #e9eef7;
+    background-color: #4f69a6;;
+}
+
