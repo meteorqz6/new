@@ -23,7 +23,12 @@
 </div>
 
 <div id="text-container">
-    <div id="text">SKYGUIDE</div>
+    <div id="text">
+        SKYGUIDE
+        <span th:if="${currentUser != null}">
+        <span th:text="'환영합니다, ' + ${currentUser.username} + '님!'"></span>
+    </span>
+    </div>
 </div>
 </body>
 </html>

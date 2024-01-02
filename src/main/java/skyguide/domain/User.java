@@ -15,6 +15,7 @@ public class User {
     private String username;
     private String email;
     private String password;
+    private String phone;
 
     private String rememberMeToken;
 
@@ -50,6 +51,14 @@ public class User {
         this.password = password;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public String getRememberMeToken() {
         return rememberMeToken;
     }
@@ -62,6 +71,7 @@ public class User {
         this.rememberMeToken = generateRememberMeToken();
     }
 
+//    이름, 이메일, 휴대폰번호가 모두 일치할 시
     public String findPassword(String email) {
         if (this.email.equals(email)) {
             return this.password;

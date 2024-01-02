@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String registerUser(@RequestParam String username, @RequestParam String email, @RequestParam String password) {
+    public String registerUser(@RequestParam String username, @RequestParam String email, @RequestParam String password, @RequestParam String phone) {
         if (!userService.isEmailAvailable(email)) {
             return "redirect:/signup?error=EmailNotAvailable";
         }
@@ -34,6 +34,7 @@ public class UserController {
         newUser.setUsername(username);
         newUser.setEmail(email);
         newUser.setPassword(password);
+        newUser.setPhone(phone);
 
         userService.saveUser(newUser);
 
