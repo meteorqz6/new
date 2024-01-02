@@ -64,14 +64,16 @@ public class User {
     }
 
     public String generateRememberMeToken() {
-        return UUID.randomUUID().toString(); // 랜덤한 UUID(Universally Unique Identifier) 생성
+        this.rememberMeToken = UUID.randomUUID().toString(); // 랜덤한 UUID(Universally Unique Identifier) 생성
+        return this.rememberMeToken;
     }
 
     public void setRememberMeToken(String rememberMeToken) {
-        this.rememberMeToken = generateRememberMeToken();
+        this.rememberMeToken = rememberMeToken;
+        generateRememberMeToken();
     }
 
-//    이름, 이메일, 휴대폰번호가 모두 일치할 시
+//    이름, 이메일, 휴대폰번호가 모두 일치할 시로 수정
     public String findPassword(String email) {
         if (this.email.equals(email)) {
             return this.password;

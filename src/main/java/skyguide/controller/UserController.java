@@ -58,10 +58,11 @@ public class UserController {
 
             // Remember Me? 체크박스에 체크된 경우
             if (rememberMe != null && rememberMe.equals("on")) {
+                String rememberMeToken = user.generateRememberMeToken();
                 Cookie rememberMeCookie = new Cookie("rememberMe", "true");
                 rememberMeCookie.setMaxAge(30 * 24 * 60 * 60); // 쿠키 유효기간 30일(=30*24*60*60sec)
                 response.addCookie(rememberMeCookie);
-                user.generateRememberMeToken();
+                user.setRememberMeToken(rememberMeToken);
                 userService.saveUser(user);
             }
 
