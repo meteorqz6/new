@@ -13,7 +13,7 @@ public class User {
 
     @Column(unique = true, nullable = false)
     private String username;
-    private String identify;
+    private String email;
     private String password;
 
     private String rememberMeToken;
@@ -34,12 +34,12 @@ public class User {
         this.username = username;
     }
 
-    public String getIdentify() {
-        return identify;
+    public String getEmail() {
+        return email;
     }
 
-    public void setIdentify(String identify) {
-        this.identify = identify;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -63,7 +63,7 @@ public class User {
     }
 
     public String findPassword(String email) {
-        if (this.identify.equals(email)) {
+        if (this.email.equals(email)) {
             return this.password;
         } else {
             return null;

@@ -15,12 +15,12 @@ body{
     align-items: center;
     min-height: 100vh;
     background: url('/img/background.png') no-repeat;
-    background-size: cover; 
-    background-position: center; 
+    background-size: cover;
+    background-position: center;
 }
 
 .wrapper{
-    width: 530px;
+    width: 440px;
     background: transparent;
     border: 2px solid rgba(255,255,255,.2);
     backdrop-filter: blur(20px);
@@ -42,6 +42,7 @@ body{
     position: relative;
     width: 100%;
     height: 50px;
+    /* background: salmon; */
     margin: 10px 0;
 }
 
@@ -68,7 +69,7 @@ body{
     top: 50%;
     transform: translateY(-50%);
     font-size: 20px;
-    
+
 }
 
 .wrapper .btn{
@@ -86,30 +87,14 @@ body{
     font-weight: 600;
 }
 
-.wrapper .login-link {
-    font-size: 12px;
-    text-align: center;
-    margin: 20px 0 15px;
-}
-
-.login-link p a{
-    color: #fff;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.login-link p a:hover{
-    text-decoration: underline;
-}
-
 .input-box input:focus {
-    background: rgba(30, 30, 30, 0.9); 
-    opacity: 1; 
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); 
+    background: rgba(30, 30, 30, 0.9);
+    opacity: 1;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
 .input-box input[type="tel"]{
-    width: 137.3px;
+    width: 107.3px;
     height: 100%;
     border: none;
     outline: none;
@@ -122,7 +107,7 @@ body{
 }
 
 .input-box input[type="tel"]:focus {
-    background: rgba(30, 30, 30, 0.9); 
-    opacity: 1; 
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); 
+    background: rgba(30, 30, 30, 0.9);
+    opacity: 1;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 }

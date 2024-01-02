@@ -14,12 +14,12 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public boolean isIdentifyAvailable(String identify) {
-        return userRepository.findByIdentify(identify) == null;
+    public boolean isEmailAvailable(String email) {
+        return userRepository.findByEmail(email) == null;
     }
 
-    public User loginUser(String identify, String password) {
-        User user = userRepository.findByIdentify(identify);
+    public User loginUser(String email, String password) {
+        User user = userRepository.findByEmail(email);
         if (user != null && user.getPassword().equals(password)) {
             return user;
         }
@@ -36,11 +36,11 @@ public class UserService {
         return null;
     }
 
-    public String findPassword(String identify) {
-        User user = userRepository.findByIdentify(identify);
+    public String findPassword(String email) {
+        User user = userRepository.findByEmail(email);
 
         if (user != null) {
-            return user.findPassword(identify);
+            return user.findPassword(email);
         } else {
             return null;
         }

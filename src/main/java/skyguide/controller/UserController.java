@@ -25,14 +25,14 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String registerUser(@RequestParam String username, @RequestParam String identify, @RequestParam String password) {
-        if (!userService.isIdentifyAvailable(identify)) {
-            return "redirect:/signup?error=IdentifyNotAvailable";
+    public String registerUser(@RequestParam String username, @RequestParam String email, @RequestParam String password) {
+        if (!userService.isEmailAvailable(email)) {
+            return "redirect:/signup?error=EmailNotAvailable";
         }
 
         User newUser = new User();
         newUser.setUsername(username);
-        newUser.setIdentify(identify);
+        newUser.setEmail(email);
         newUser.setPassword(password);
 
         userService.saveUser(newUser);
@@ -46,10 +46,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String loginUser(@RequestParam String identify, @RequestParam String password,
+    public String loginUser(@RequestParam String email, @RequestParam String password,
                             @RequestParam(value = "rememberMe", required = false) String rememberMe,
                             HttpSession session, HttpServletResponse response, Model model) {
-        User user = userService.loginUser(identify, password);
+        User user = userService.loginUser(email, password);
 
         if (user != null) {
             session.setAttribute("currentUser", user);
@@ -100,8 +100,8 @@ public class UserController {
     }
 
     @PostMapping("/findPW")
-    public String findPassword(@RequestParam String identify, Model model) {
-        String foundPassword = userService.findPassword(identify);
+    public String findPassword(@RequestParam String email, Model model) {
+        String foundPassword = userService.findPassword(email);
 
         if (foundPassword != null) {
             model.addAttribute("foundPassword", foundPassword);
