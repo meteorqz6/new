@@ -4,43 +4,98 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
+  <title>findPW</title>
   <link rel="stylesheet" href="/css/findPW.css">
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <script>
+    var verificationFieldAdded = false;
+
+    function addVerificationField() {
+        if (!verificationFieldAdded) {  // 인증 필드가 이미 추가되었는지 확인
+            var form = document.getElementById('findPWForm');
+            var input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'verificationCode';
+            input.placeholder = '인증코드';
+            input.required = false;
+            input.classList.add('input-box');
+            form.insertBefore(input, document.getElementById('submitButton'));
+
+            // "인증코드 확인" 버튼을 보이게 함
+            document.getElementById('submitButton').style.display = 'block';
+            verificationFieldAdded = true; // 버튼 추가했음 업데이트
+        }
+    }
+
+    // Ajax 요청을 위한 함수
+    function sendVerificationEmail() {
+        var formData = new FormData(document.getElementById('findPWForm'));
+        fetch('/sendVerificationEmail', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            // 인증 이메일 전송 성공 응답 처리
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    function sendForm() {
+        if (formIsValid()) {
+            var formData = new FormData(document.getElementById('findPWForm'));
+            fetch('/findPW', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // 인증코드 확인 성공 응답 처리
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        } else {
+            alert('모든 필드를 채워주세요.');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('sendEmailButton').addEventListener('click', function() {
+            addVerificationField();
+            sendVerificationEmail();
+        });
+        document.getElementById('submitButton').addEventListener('click', sendForm);
+    });
+  </script>
 </head>
 <body>
 <div class="wrapper">
-  <form action="/findPW" method="post">
+  <form id="findPWForm" action="/findPW" method="POST">
     <h1>Find Password</h1>
+
+    <div th:if="${errorMessage}" class="error-message">
+      <span th:text="${errorMessage}"></span>
+    </div>
+
+    <div class="input-box">
+      <input type="text" name="username" placeholder="이름" required>
+      <i class='bx bxs-user'></i>
+    </div>
+
+    <div class="input-box">
+      <input type="tel" name="phone" placeholder="휴대전화" required>
+      <i class='bx bxs-phone'></i>
+    </div>
 
     <div class="input-box">
       <input type="email" name="email" placeholder="이메일" required>
       <i class='bx bxs-envelope'></i>
     </div>
 
-    <div class="input-box">
-      <input type="text" placeholder="이름" required>
-      <i class='bx bxs-user'></i>
-    </div>
-
-    <div class="input-box">
-      <input type="tel" placeholder="휴대전화" required>  -
-      <input type="tel" >  -  <input type="tel">
-      <i class='bx bxs-phone'></i>
-    </div>
-
-    <!-- <div class="remember-forgot">
-        <label><input type="checkbox"> 로그인 상태 유지</label>
-        <a href="#">비밀번호 찾기</a>
-    </div> -->
-
-    <button type="submit" class="btn">확인</button>
-
-    <!-- <div class="signup-link">
-        <p>아직 계정이 없으신가요? <a href="signup.html">회원가입</a></p>
-    </div> -->
-
+    <button type="button" id="sendEmailButton" class="btn">인증메일 보내기</button>
+    <button type="submit" id="submitButton" class="btn" style="display:none;">인증코드 확인</button>
   </form>
 </div>
-</body>
-</html>

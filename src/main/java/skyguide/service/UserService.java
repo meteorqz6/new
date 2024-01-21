@@ -3,7 +3,7 @@ package skyguide.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import skyguide.domain.User;
-import skyguide.respository.UserRepository;
+import skyguide.respository.UserRepository;;import java.util.Optional;
 
 @Service
 public class UserService {
@@ -36,14 +36,20 @@ public class UserService {
         return null;
     }
 
-    public String findPassword(String email) {
-        User user = userRepository.findByEmail(email);
-
-        if (user != null) {
-            return user.findPassword(email);
-        } else {
-            return null;
-        }
+    public boolean checkUserExists(String email, String username, String phone) {
+        Optional<User> userOptional = userRepository.findByUsernameAndEmailAndPhone(email, username, phone);
+        return userOptional.isPresent();
     }
+
+    public boolean resetPassword(String email, String newPassword) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            user.setPassword(newPassword);
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+
 
 }

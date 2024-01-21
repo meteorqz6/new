@@ -1,5 +1,10 @@
 package skyguide.controller;
 
+import com.mysql.cj.Session;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,17 +12,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import skyguide.domain.User;
+import skyguide.respository.UserRepository;
+import skyguide.service.EmailService;
 import skyguide.service.UserService;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+import java.util.Random;
 
 @Controller
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/signup")
     public String signupPage() {
@@ -102,16 +113,91 @@ public class UserController {
     }
 
     @PostMapping("/findPW")
-    public String findPassword(@RequestParam String email, Model model) {
-        String foundPassword = userService.findPassword(email);
+    public String findPassword(@RequestParam String email, @RequestParam String username, @RequestParam String phone, @RequestParam(required = false) String verificationCode, Model model) {
+        User user = userRepository.findByEmail(email);
 
-        if (foundPassword != null) {
-            model.addAttribute("foundPassword", foundPassword);
-            return "findPWResult";
+        if (verificationCode != null && user != null && user.getVerificationCode().equals(verificationCode)) {
+            return "resetPW";
         } else {
-            model.addAttribute("error", "해당 ID가 존재하지 않습니다. 올바른 ID(이메일)를 입력해주세요.");
+//            model.addAttribute("errorMessage", "잘못된 인증코드입니다.");
             return "findPW";
         }
     }
 
+    @PostMapping("/sendVerificationEmail")
+    public String sendVerificationEmail(@RequestParam String email, @RequestParam String username, @RequestParam String phone, Model model) {
+        // 매개변수 순서 안 맞춰서 오류났음
+        boolean userExists = userService.checkUserExists(username, email, phone);
+
+        if (userExists) {
+            User user = userRepository.findByEmail(email);
+            String verificationCode = generateVerificationCode();
+            user.setVerificationCode(verificationCode);
+            userService.saveUser(user);
+
+            try {
+                emailService.sendVerificationEmail(email, verificationCode);
+                model.addAttribute("email", email);
+                return "findPW";
+            } catch (Exception e) {
+//                model.addAttribute("errorMessage", "인증 이메일 전송에 실패했습니다.");
+                return "findPW";
+            }
+        } else {
+//            model.addAttribute("errorMessage", "일치하는 회원정보가 없습니다. 다시 확인해주세요.");
+            return "findPW";
+        }
+    }
+
+    private String generateVerificationCode() {
+        Random random = new Random();
+        int random6num = 100000 + random.nextInt(900000);
+        String verificationCode = String.valueOf(random6num);
+        return verificationCode;
+    }
+
+    @GetMapping("/verifyPW")
+    public String verifyPage(){
+        return "verify";
+    }
+
+    @PostMapping("/verifyPW")
+    public String verifyPassword(@RequestParam String username,
+                                 @RequestParam String email,
+                                 @RequestParam String phone,
+                                 @RequestParam String verificationCode,
+                                 Model model) {
+        boolean isVerified = emailService.verifyUser(username, email, phone, verificationCode);
+
+        if (isVerified) {
+            model.addAttribute("email", email);
+            return "resetPW";
+        } else {
+//            model.addAttribute("errorMessage", "잘못된 인증코드입니다.");
+            return "findPW";
+        }
+    }
+
+    @GetMapping("/resetPW")
+    public String showResetPasswordForm() {
+        return "resetPW";
+    }
+
+    @PostMapping("/resetPW")
+    public String resetPassword(@RequestParam String email,
+                                @RequestParam String newPassword,
+                                Model model){
+        boolean resetSuccess = userService.resetPassword(email, newPassword);
+
+        if (resetSuccess){
+            return "redirect:/login";
+        } else {
+//            model.addAttribute("errorMessage", "비밀번호 재설정에 실패했습니다.");
+            return "resetPW";
+        }
+    }
+
+
 }
+
+

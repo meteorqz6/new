@@ -2,6 +2,7 @@ package skyguide.domain;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -18,6 +19,8 @@ public class User {
     private String phone;
 
     private String rememberMeToken;
+    private String verificationCode;
+    private LocalDateTime verificationCodeTimeStamp;
 
     public Long getId() {
         return id;
@@ -73,13 +76,26 @@ public class User {
         generateRememberMeToken();
     }
 
-//    이름, 이메일, 휴대폰번호가 모두 일치할 시로 수정
-    public String findPassword(String email) {
-        if (this.email.equals(email)) {
-            return this.password;
-        } else {
-            return null;
-        }
+    public String getVerificationCode() {
+        return verificationCode;
     }
+
+    public void setVerificationCode(String verificationCode){
+        this.verificationCode = verificationCode;
+        this.verificationCodeTimeStamp = LocalDateTime.now();
+    }
+
+    public LocalDateTime getVerificationCodeTimeStamp() {
+        return verificationCodeTimeStamp;
+    }
+
+//    이름, 이메일, 휴대폰번호가 모두 일치할 시
+//    public String findPassword(String username, String email, String phone) {
+//        if (this.username.equals(username) && this.email.equals(email) && this.phone.equals(phone)) {
+//            return this.password;
+//        } else {
+//            return null;
+//        }
+//    }
 
 }

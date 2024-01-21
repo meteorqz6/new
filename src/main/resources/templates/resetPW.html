@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>resetPW</title>
+    <link rel="stylesheet" href="#">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="wrapper">
+        <form action="/resetPW" method="POST">
+            <h1>Reset Password</h1>
+
+            <div class="input-box">
+                <input type="hidden" name="email" th:value="${email}" readonly>
+            </div>
+
+            <div class="input-box">
+                <input type="password" name="newPassword" placeholder="새로운 비밀번호" required>
+            </div>
+
+            <button type="submit" class="btn">확인</button>
+        </form>
+    </div>
+</body>
+</html>
